@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Live Age Calculator</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
+background:#020617;
+color:white;
+}
+
+/* header */
+
+.header{
+position:sticky;
+top:0;
+z-index:50;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:12px 16px;
+background:rgba(2,6,23,.85);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.logoBox{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo{
+width:42px;
+height:42px;
+border-radius:10px;
+}
+
+.title{
+font-size:17px;
+font-weight:600;
+color:#38bdf8;
+}
+
+.actions{
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+.downloadMini{
+background:#38bdf8;
+border:none;
+padding:7px 14px;
+border-radius:8px;
+font-weight:600;
+cursor:pointer;
+}
+
+.menuBtn{
+font-size:20px;
+cursor:pointer;
+}
+
+.menu{
+display:none;
+position:absolute;
+right:16px;
+top:55px;
+background:#0f172a;
+border-radius:10px;
+overflow:hidden;
+min-width:150px;
+box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+
+.menu a{
+display:block;
+padding:12px;
+text-decoration:none;
+color:white;
+}
+
+.menu a:hover{
+background:#38bdf8;
+}
+
+/* hero */
+
+.hero{
+padding:20px 16px 0;
+}
+
+.hero h1{
+margin:0;
+font-size:26px;
+}
+
+.hero p{
+margin-top:8px;
+color:#94a3b8;
+line-height:1.6;
+}
+
+/* meta */
+
+.meta{
+display:flex;
+justify-content:space-around;
+padding:18px 10px;
+border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.meta div{
+text-align:center;
+}
+
+.meta strong{
+display:block;
+font-size:16px;
+}
+
+.meta span{
+font-size:13px;
+color:#94a3b8;
+}
+
+/* gallery */
+
+.gallery{
+display:flex;
+gap:14px;
+overflow-x:auto;
+padding:18px 16px;
+}
+
+.gallery iframe{
+height:250px;
+width:170px;
+border-radius:14px;
+border:none;
+}
+
+.gallery img{
+height:250px;
+border-radius:14px;
+}
+
+/* section */
+
+.section{
+padding:20px 16px;
+max-width:850px;
+margin:auto;
+}
+
+.section h2{
+font-size:20px;
+margin-bottom:8px;
+}
+
+/* description */
+
+.desc{
+color:#cbd5f5;
+line-height:1.8;
+}
+
+/* reviews */
+
+.reviewBox{
+margin-top:12px;
+background:#0f172a;
+padding:14px;
+border-radius:12px;
+}
+
+.stars{
+font-size:26px;
+cursor:pointer;
+user-select:none;
+}
+
+.reviewBox textarea{
+width:100%;
+margin-top:10px;
+background:#020617;
+border:1px solid rgba(255,255,255,.08);
+color:white;
+padding:10px;
+border-radius:8px;
+resize:none;
+height:70px;
+}
+
+.reviewBox button{
+margin-top:8px;
+background:#38bdf8;
+border:none;
+padding:9px 16px;
+border-radius:8px;
+font-weight:600;
+cursor:pointer;
+}
+
+/* download */
+
+.downloadArea{
+padding:40px 20px;
+text-align:center;
+}
+
+.downloadMain{
+background:#38bdf8;
+padding:14px 32px;
+border:none;
+border-radius:12px;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+}
+
+/* footer */
+
+.footer{
+text-align:center;
+padding:25px;
+font-size:13px;
+color:#64748b;
+border-top:1px solid rgba(255,255,255,.05);
+}
+
+.reviewItem{
+margin-top:12px;
+padding-top:10px;
+border-top:1px solid rgba(255,255,255,.05);
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- header -->
+
+<div class="header">
+
+<div class="logoBox">
+
+<img src="logo.png" class="logo">
+
+<div class="title">
+Live Age Calculator
+</div>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="downloadMini"
+id="downloadMini">
+
+Download
+
+</button>
+
+
+<div
+class="menuBtn"
+onclick="toggleMenu()">
+
+⋮
+
+</div>
+
+</div>
+
+
+<div
+class="menu"
+id="menu">
+
+<a href="credits.html">
+
+Credits
+
+</a>
+
+</div>
+
+</div>
+
+
+
+<!-- intro -->
+
+<div class="hero">
+
+<h1>
+Live Age Calculator
+</h1>
+
+<p>
+
+Live Age Calculator provides precise real-time age tracking updated every second. 
+Instantly view detailed lifetime statistics including total time lived, upcoming birthday insights, and saved profiles — all in a fast, modern interface.
+
+</p>
+
+</div>
+
+
+
+<!-- meta info -->
+
+<div class="meta">
+
+<div>
+
+<strong id="rating">
+5.0★
+</strong>
+
+<span>
+Rating
+</span>
+
+</div>
+
+
+<div>
+
+<strong id="downloads">
+0
+</strong>
+
+<span>
+Downloads
+</span>
+
+</div>
+
+
+<div>
+
+<strong id="size">
+0 MB
+</strong>
+
+<span>
+Size
+</span>
+
+</div>
+
+
+<div>
+
+<strong id="version">
+1.0
+</strong>
+
+<span>
+Version
+</span>
+
+</div>
+
+</div>
+
+
+
+<!-- gallery -->
+
+<div class="gallery">
+
+<iframe
+src="https://www.youtube.com/embed/YOUR_VIDEO_ID">
+</iframe>
+
+<img src="screen1.png">
+
+<img src="screen2.png">
+
+<img src="screen3.png">
+
+</div>
+
+
+
+<!-- about -->
+
+<div class="section">
+
+<h2>
+About this app
+</h2>
+
+
+<div class="desc">
+
+Track your exact age in real time with second-level precision.
+
+Live Age Calculator displays complete time breakdowns including years, months, weeks, days, hours, minutes and seconds, along with high-precision lifetime totals.
+
+View upcoming birthday countdowns with weekday predictions and store multiple profiles for quick access.
+
+Designed with a clean interface focused on speed, clarity and everyday usability.
+
+</div>
+
+</div>
+
+
+
+<!-- reviews -->
+
+<div class="section">
+
+<h2>
+Ratings & Reviews
+</h2>
+
+
+<div class="reviewBox">
+
+<div
+class="stars"
+id="stars">
+
+★★★★★
+
+</div>
+
+
+<textarea
+placeholder="Share your experience">
+
+</textarea>
+
+
+<button
+id="postReview">
+
+Post review
+
+</button>
+
+
+<div id="reviewList"></div>
+
+</div>
+
+</div>
+
+
+
+<!-- download -->
+
+<div
+class="downloadArea"
+id="download">
+
+<button
+class="downloadMain"
+id="downloadMain">
+
+Download Live Age Calculator
+
+</button>
+
+</div>
+
+
+
+<!-- footer -->
+
+<div class="footer">
+
+Live Age Calculator © 2026  
+All rights reserved
+
+</div>
+
+
+
+<script>
+
+/* menu */
+
+function toggleMenu(){
+
+let m=
+document.getElementById("menu");
+
+m.style.display=
+m.style.display=="block"
+? "none"
+: "block";
+
+}
+
+
+/* smooth scroll */
+
+document
+.getElementById("downloadMini")
+
+.onclick = ()=>{
+
+document
+.getElementById("download")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+};
+
+
+/* github real data */
+
+const repo =
+"gamerid47/Live-Age-Calculator";
+
+
+fetch(
+`https://api.github.com/repos/${repo}/releases/latest`
+)
+
+.then(r=>r.json())
+
+.then(data=>{
+
+let file =
+data.assets[0];
+
+let size =
+(file.size/1048576)
+.toFixed(2);
+
+
+document
+.getElementById("size")
+.innerText =
+size+" MB";
+
+
+document
+.getElementById("version")
+.innerText =
+data.tag_name;
+
+
+document
+.getElementById("downloads")
+.innerText =
+file.download_count;
+
+
+document
+.getElementById("downloadMain")
+.onclick =
+()=>{
+
+location.href =
+file.browser_download_url;
+
+};
+
+});
+
+
+/* reviews */
+
+let stars=5;
+
+document
+.getElementById("stars")
+.onclick=e=>{
+
+stars=
+e.target.innerText.length;
+
+};
+
+
+function loadReviews(){
+
+let r=
+JSON.parse(
+localStorage.getItem("reviews")||"[]"
+);
+
+let list=
+document.getElementById("reviewList");
+
+list.innerHTML="";
+
+r.forEach(v=>{
+
+let d=
+document.createElement("div");
+
+d.className="reviewItem";
+
+d.innerHTML=
+"★".repeat(v.s)
++"<br>"
++v.t;
+
+list.appendChild(d);
+
+});
+
+
+if(r.length){
+
+let avg=
+(
+r.reduce(
+(a,b)=>a+b.s,0
+)
+/r.length
+).toFixed(1);
+
+
+document
+.getElementById("rating")
+.innerText=
+avg+"★";
+
+}
+
+}
+
+
+document
+.getElementById("postReview")
+
+.onclick=()=>{
+
+let txt=
+document.querySelector("textarea");
+
+if(!txt.value.trim())
+return;
+
+let r=
+JSON.parse(
+localStorage.getItem("reviews")||"[]"
+);
+
+
+r.unshift({
+
+t:txt.value,
+s:stars
+
+});
+
+
+localStorage
+.setItem(
+"reviews",
+JSON.stringify(r)
+);
+
+
+txt.value="";
+
+loadReviews();
+
+};
+
+
+loadReviews();
+
+</script>
+
+
+</body>
+
+</html>
