@@ -186,11 +186,22 @@ border-radius:12px;
 }
 
 .stars{
-font-size:26px;
-cursor:pointer;
-user-select:none;
+display:flex;
+gap:6px;
+margin-bottom:6px;
 }
 
+.stars span{
+font-size:30px;
+cursor:pointer;
+color:#334155;
+transition:.15s;
+}
+
+.stars span.active{
+color:#fbbf24;
+transform:scale(1.1);
+}
 .reviewBox textarea{
 width:100%;
 margin-top:10px;
@@ -389,7 +400,7 @@ Version
 <div class="gallery">
 
 <iframe
-src="https://www.youtube.com/">
+src="https://youtu.be/hfC5P9m5tDQ">
 </iframe>
 
 <img src="screen1.png">
@@ -432,42 +443,34 @@ Designed with a clean interface focused on speed, clarity and everyday usability
 
 <div class="section">
 
-<h2>
-Ratings & Reviews
-</h2>
-
+<h2>Ratings & Reviews</h2>
 
 <div class="reviewBox">
 
-<div
-class="stars"
-id="stars">
+<div class="stars" id="stars">
 
-★★★★★
+<span data-v="1">★</span>
+<span data-v="2">★</span>
+<span data-v="3">★</span>
+<span data-v="4">★</span>
+<span data-v="5">★</span>
 
 </div>
 
-
 <textarea
+id="reviewText"
 placeholder="Share your experience">
-
 </textarea>
 
-
-<button
-id="postReview">
-
+<button id="postReview">
 Post review
-
 </button>
-
 
 <div id="reviewList"></div>
 
 </div>
 
 </div>
-
 
 
 <!-- download -->
@@ -587,61 +590,93 @@ file.browser_download_url;
 
 /* reviews */
 
-let stars=5;
+/* star selection */
 
-document
-.getElementById("stars")
-.onclick=e=>{
+let selectedStars = 0;
 
-stars=
-e.target.innerText.length;
+const starElements =
+document.querySelectorAll("#stars span");
 
-};
+starElements.forEach(star=>{
 
+star.addEventListener("click",()=>{
 
-function loadReviews(){
+selectedStars =
+parseInt(star.dataset.v);
 
-let r=
-JSON.parse(
-localStorage.getItem("reviews")||"[]"
-);
+updateStarUI();
 
-let list=
-document.getElementById("reviewList");
-
-list.innerHTML="";
-
-r.forEach(v=>{
-
-let d=
-document.createElement("div");
-
-d.className="reviewItem";
-
-d.innerHTML=
-"★".repeat(v.s)
-+"<br>"
-+v.t;
-
-list.appendChild(d);
+});
 
 });
 
 
-if(r.length){
+function updateStarUI(){
 
-let avg=
+starElements.forEach(star=>{
+
+star.classList.toggle(
+"active",
+parseInt(star.dataset.v)
+<= selectedStars
+
+);
+
+});
+
+}
+
+
+/* review system */
+
+function loadReviews(){
+
+let reviews =
+JSON.parse(
+localStorage.getItem("reviews")
+||"[]"
+);
+
+let list =
+document.getElementById("reviewList");
+
+list.innerHTML="";
+
+
+reviews.forEach(r=>{
+
+let item =
+document.createElement("div");
+
+item.className="reviewItem";
+
+item.innerHTML =
+`
+<div class="reviewStars">
+${"★".repeat(r.s)}
+</div>
+
+<div>
+${r.t}
+</div>
+`;
+
+list.appendChild(item);
+
+});
+
+
+if(reviews.length){
+
+let avg =
 (
-r.reduce(
-(a,b)=>a+b.s,0
-)
-/r.length
+reviews.reduce((a,b)=>a+b.s,0)
+/reviews.length
 ).toFixed(1);
-
 
 document
 .getElementById("rating")
-.innerText=
+.innerText =
 avg+"★";
 
 }
@@ -652,24 +687,29 @@ avg+"★";
 document
 .getElementById("postReview")
 
-.onclick=()=>{
+.onclick = ()=>{
 
-let txt=
-document.querySelector("textarea");
+let text =
+document
+.getElementById("reviewText");
 
-if(!txt.value.trim())
-return;
+if(
+!text.value.trim()
+|| selectedStars==0
+) return;
 
-let r=
+
+let reviews =
 JSON.parse(
-localStorage.getItem("reviews")||"[]"
+localStorage.getItem("reviews")
+||"[]"
 );
 
 
-r.unshift({
+reviews.unshift({
 
-t:txt.value,
-s:stars
+t:text.value,
+s:selectedStars
 
 });
 
@@ -677,11 +717,15 @@ s:stars
 localStorage
 .setItem(
 "reviews",
-JSON.stringify(r)
+JSON.stringify(reviews)
 );
 
 
-txt.value="";
+text.value="";
+
+selectedStars=0;
+
+updateStarUI();
 
 loadReviews();
 
@@ -689,7 +733,6 @@ loadReviews();
 
 
 loadReviews();
-
 </script>
 
 
